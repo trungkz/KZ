@@ -1,17 +1,18 @@
-# Quản lý cơ sở PCCC & CNCH
+# Quản lý cơ sở PCCC & CNCH (GitHub Pages + Supabase)
 
-Ứng dụng web một trang (HTML thuần, không cần máy chủ) để quản lý hồ sơ, hệ thống và lực lượng PCCC của các cơ sở.
+Ứng dụng một trang (`index.html`) lưu dữ liệu dùng chung trên Supabase.
 
-## Chạy trên GitHub Pages
+## Triển khai
+1. Tải `index.html`, `.nojekyll`, `README.md` và thư mục `supabase/` lên repository GitHub (nhánh `main`).
+2. Settings → Pages → Deploy from a branch → `main` / `(root)` → Save.
+3. Mở `https://<tên-tài-khoản>.github.io/<tên-repo>/`.
 
-1. Tạo repository mới trên GitHub, ví dụ `quan-ly-pccc`.
-2. Tải lên các tệp `index.html`, `.nojekyll` và `README.md` ở nhánh `main`.
-3. Vào **Settings → Pages**. Ở mục **Build and deployment**, chọn **Deploy from a branch**, nhánh `main`, thư mục `/ (root)`, rồi bấm **Save**.
-4. Sau 1–2 phút, ứng dụng chạy tại `https://<tên-tài-khoản>.github.io/quan-ly-pccc/`.
+## Cấp quyền cho người dùng
+Bảng `staff` là danh sách email được phép xem và sửa dữ liệu. Mỗi người tạo tài khoản ngay trong ứng dụng (nút "Tạo tài khoản"), sau đó quản trị viên thêm email (viết thường) trong Supabase → SQL Editor:
 
-## Lưu ý về dữ liệu
+    insert into public.staff (email) values ('ten@congty.vn');
 
-- Dữ liệu lưu trong trình duyệt của từng người dùng (localStorage), không gửi lên GitHub và không dùng chung giữa các máy.
-- Dùng **Xuất Excel** hoặc **Sao lưu JSON** để sao lưu và chuyển dữ liệu giữa các máy.
-- Không đưa file Excel hoặc JSON chứa dữ liệu thật của cơ sở vào repository công khai.
-- Thư viện đọc/ghi Excel (JSZip) đã gắn sẵn trong `index.html`, nên ứng dụng không cần tải gì từ mạng khi chạy.
+## Bảo mật
+- Khóa `anon` trong `index.html` là khóa công khai theo thiết kế của Supabase. Dữ liệu được bảo vệ bởi đăng nhập và Row Level Security, người chưa được thêm vào `staff` không đọc hay ghi được gì.
+- Không đưa khóa `service_role` vào mã nguồn.
+- Cấu trúc bảng nằm ở `supabase/migrations/` (đã áp dụng cho project).
